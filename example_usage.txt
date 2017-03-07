@@ -1,0 +1,48 @@
+
+library(Rcpp)
+sourceCpp("QRdecomposition.cpp")
+
+
+w <- c(52,30,49,28)
+x <- c(30,50,8,44)
+y <- c(49,8,46,16)
+z <- c(28,44,16,22)
+
+m <- matrix(0,4,4)
+
+m[,1] <- w
+m[,2] <- x
+m[,3] <- y
+m[,4] <- z
+
+
+x <- c(12,6,-4)
+y <- c(-51,167,24)
+z <- c(4,-68,-41)
+
+x <- c(1,-2,0)
+y <- c(-2,5,0)
+z <- c(0,0,2)
+
+
+m <- matrix(0,3,3)
+
+m[,1] <- x
+m[,2] <- y
+m[,3] <- z
+
+A <- m
+
+pQ <- diag(1, dim(m)[1]);
+
+for(i in 1:3000) {
+
+U1 <- getU(m)
+Q1 <- getQ(U1)
+R1 <- getR(Q1,m) 
+m <- R1 %*% Q1
+pQ <- pQ %*% Q1
+}
+
+
+eigen(A)
